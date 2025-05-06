@@ -1,0 +1,180 @@
+
+  <body id="body">
+  <div id="biginclude"> 
+<style type="text/css">
+#privat { width: 100%;display: none; margin:10px 0;}
+#qrcode { max-width: 300px; max-height: 300px; margin: auto;}
+#qrcode img{ width: 100%; }
+#privinfo{ border: 1px #ff0b0b solid;border-radius: 10px;padding: 10px 28px;background: #ffe5e5;}
+#privinfo legend {background: #fff; border-radius: 10px;}
+</style>
+<script type="text/javascript" >
+
+function download(task) {
+let fname = task == 'key'?'cryptabox':'rawprivate' 
+  var base64Data = $('#qrcode img').attr('src');
+  var fileName = fname+'-key.png';
+
+  // Создание ссылки
+  var link = document.createElement('a');
+  link.href = base64Data;
+  link.download = fileName;
+  // Клик по ссылке для скачивания
+ link.click();
+  }
+
+async function showqr(task){
+var img_codebar = document.createElement('img');
+var imgsrc;
+var labe;
+const co = task=='rawkey'?`
+<div id="fee">
+<div class="val">
+<input type="radio" name="fee" id="btc" value="btc"> 
+   <label for="btc">Btc</label>    
+
+</div>
+<div class="val">
+<input type="radio" name="fee" id="eth" checked value="eth">  
+<label for="eth">Eth</label>    
+   
+   </div>
+   <div class="val">
+   <input type="radio" name="fee" id="doge" value="doge">  
+<label for="doge">Doge</label>    
+   
+   </div>
+    <div class="val">
+   <input type="radio" name="fee" id="ltc" value="ltc">  
+<label for="ltc">Ltc</label>    
+   
+   </div>
+</div><p></p>
+`:'';
+if (task == 'key') {
+imgsrc = 'img/cryptabox.png';
+labe = 'CryptaBox Key';	
+}
+else {
+imgsrc = 'img/private.png';
+labe = 'Private Key';		
+}
+//var imgsrc = task == 'key'? 'img/cryptabox.png':'img/private.png';
+img_codebar.src = imgsrc;
+$("#privat button.dow").attr({'onclick':'download("'+task+'")'});
+$("#privat button.print").attr({'onclick':'printer("My '+labe+'")'});
+$("#privat .input_box label").html(labe);
+$("#qrbutkey").attr({'onclick':'showqr("key")'}).html('Show CryptaBox Key'); 
+$("#qrbutrawkey").attr({'onclick':'showqr("rawkey")'}).html('Show Private Key'); 
+$('#privat').hide('slow', function () {
+		$('#qrcode img').remove();
+	});
+let temp = await getKey(await getCook()[2].privkey, '', co + '<b>Enter password</b>');
+//let settemp = (s=='eth')?temp:zapadd(s,temp).wif;
+console.log(temp);
+let  key = (task == 'key' && typeof temp !== 'undefined')?await getCook()[2].privkey:(task =='rawkey'&&Array.isArray(temp))?temp[0]:task =='rawkey'?temp:'';
+let lab = (task =='rawkey'&&Array.isArray(temp))?temp[1]:task =='rawkey'?'eth':'cbox';
+$("#privat .input_box #qradd").text(key); 
+if (key) {
+$('#qrcode').qrcode(
+{
+    // render method: 'canvas', 'image' or 'div'
+    render: 'image',
+
+    // version range somewhere in 1 .. 40
+    minVersion: 1,
+    maxVersion: 40,
+
+    // error correction level: 'L', 'M', 'Q' or 'H'
+    ecLevel: 'H',
+
+    // offset in pixel if drawn onto existing canvas
+    left: 0,
+    top: 0,
+
+    // size in pixel
+    size: 400,
+
+    // code color or image element
+    fill: '#000',
+
+    // background color or image element, null for transparent background
+    background: img_codebar,
+
+    // content
+    text: key,
+
+    // corner radius relative to module width: 0.0 .. 0.5
+    radius: 0.5,
+
+    // quiet zone in modules
+    quiet: 3,
+
+    // modes
+    // 0: normal
+    // 1: label strip
+    // 2: label box
+    // 3: image strip
+    // 4: image box
+    mode: 2,
+
+    mSize: 0.1,
+    mPosX: 0.5,
+    mPosY: 0.5,
+
+    label: lab.toUpperCase(),
+    fontname: 'Arial',
+    fontcolor: '#ffa305',
+
+    image: null
+}
+);
+$('#privat').show('slow');
+ $("#qrbut"+task).attr({'onclick':'qrhide("'+task+'")'}).html('Hide '+labe); 
+	
+}
+
+ 
+}
+function qrhide(task) {
+if (task == 'key') {
+var labe = 'CryptaBox Key';	
+}
+else {
+labe = 'Private Key';		
+}
+	$('#privat').hide('slow', function () {
+		$('#qrcode img').remove();
+	});
+	$("#qrbut"+task).attr({'onclick':'showqr("'+task+'")'}).html('Show '+labe); 
+}
+
+</script>
+ 
+<fieldset id="privinfo">  
+    <legend>Private Info</legend>
+    <button  onclick="showqr('key')" id="qrbutkey" >Show CryptaBox Key</button>
+    <button  onclick="showqr('rawkey')" id="qrbutrawkey" >Show Private Key</button>
+<div id="privat" class="addss">
+<div class="input_box">
+<label>Address</label>
+<div id="qradd" class="address">
+</div>
+<button onclick="copy()" class="tooltip copyico"> </button>
+<span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+
+</div>    
+    <div id="qrcode">  
+    </div>
+    
+    <button onclick="download()" class="dow">Download</button>
+    <button onclick="printer()" class="print">Print</button>
+
+
+
+
+    </div>
+  </div>
+  </fieldset>
+  </body>
+  

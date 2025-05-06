@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>CryptaBox | Buy, Store, Trade:  Bitcoin, Ethereum, Dogecoin, Litecoin | Your Crypto Wallet </title>
+</head>
+<body>
+<script src="jslibs/jquery.min.js"></script>
+	<script src="jslibs/jquery.color.js"></script>
+	<script src="jslibs//html5-qrcode.min.js"></script>
+	<script src="jslibs/aes.js"></script>
+<script type="text/javascript" src="jslibs/crypto-min.js"></script>
+		<script type="text/javascript" src="jslibs/crypto-sha256.js"></script>
+		<script type="text/javascript" src="jslibs/crypto-sha256-hmac.js"></script>
+		<script type="text/javascript" src="jslibs/sha3.js"></script>
+		<script type="text/javascript" src="jslibs/ripemd160.js"></script>
+<script type="text/javascript" src="jslibs/jsbn.js"></script>
+		<script type="text/javascript" src="jslibs/ellipticcurve.js"></script>
+<script src="jsbox/coin.js"></script>
+<script src="jsbox/binance.js?ver=1.4"></script>
+<script src="jsbox/uix.js?ver=1.5"></script>
+<script src="jslibs/jquery-qrcode-0.18.0.min.js"></script> 
+<link rel="stylesheet" href="style.css" />
+
+  <style type="text/css">
+ 
+  </style>
+ <div class="addresses-wrapper">
+  <div class="addresses">
+    <span class="h"><b>Addresses:</b></span>
+    <div class="address-item"><span class="label">Bitcoin:</span><span class="addr" data-coin="btc">---</span></div>
+    <div class="address-item"><span class="label">Dogecoin:</span><span class="addr" data-coin="doge">---</span></div>
+    <div class="address-item"><span class="label">Ethereum:</span> <span class="addr" data-coin="eth">---</span></div>
+    <div class="address-item"><span class="label">Litecoin:</span> <span class="addr" data-coin="ltc">---</span></div>
+  </div>
+</div>
+
+<div id="conteiner">
+  <div id="mycryptabox" > 
+  <div id="mycryptabox-content" class="chart">
+  
+    <h2>My CryptaBox</h2>
+    <div id="getkeys" ></div>
+   
+  
+    </div>
+    </div>
+  
+ <div id="login"> 
+  
+    <h3>Login</h3>
+    <fieldset class="custom-checkbox">
+ <input type="checkbox" name="mem" id="mem" onClick="toMem()"> <label for="mem">Remember Me</label>   
+ </fieldset>
+<fieldset id="fil">
+<p>Login with CryptaBox keyfile</p>
+
+ <input type="file" id="encrypt-input" onclick="this.value=null;"/>
+<label for="encrypt-input">
+      <span class="input_file-icon"></span>
+      <span class="input_file-button-text">Select keyfile</span>
+   </label> 
+</fieldset>
+
+
+<p style="width: 100%;"><p>You have not a CryptaBox keyfile?</p><button onclick="createKey()" class="big">Get CryptaBox keyfile</button></p>
+<fieldset id="other">
+<legend>Other method login</legend>
+<button onclick="scanqr()">QR CryptaBox key</button>
+
+<button onclick="importKey()">Import private key</button>
+
+</fieldset>
+
+
+
+    
+    </div>
+    </div>
+  <script type="text/javascript" >
+  var mess = `
+<div id="ins">  
+  <div class="container addss">
+ 
+   
+  </div>
+  <div class="opentx">
+  <div class="divtxt"><b>Create password for CryptaBox keyfile</b><span class="warn">Please create your password to protect your private key and CryptaBox keyfile.</span></div> 
+  <div class="input_box pass"><input type="password" id="createpass" class="inpass"/><button class="hidepass" onclick="showpass()"></button></div><button id="getcreatepass">Create new Pass</button> <button class="cancel" onclick="clouseAlert()">Cancel</button>
+  </div>
+</div>  
+  `;
+  //let log = getCook();
+   $(function(){
+   	logon(); 
+   checkLog(); 
+ });
+
+  function checkLog() { 
+  let tempdat = location.hash.slice(2).split('/');
+symbChart = tempdat[0];
+ page = tempdat[1];
+  	 	if (keylog == true  ) {
+  	var cooks = getCook(); 	
+  	 if (cooks[2].privkey) {
+ $('#getkeys').load('qrencode.html', '#biginclude').fadeIn(300);
+$('#login h3').fadeOut(300, function() {
+  $(this).html('ReLogin').fadeIn(1000);
+});   	 	
+  	 }	 
+  else {
+  	$('#login h3').fadeOut(300, function() {
+  $(this).html('Login').fadeIn(1000);
+});
+  }
+  	}
+  	else if (keylog == true && page != 'mycryptabox') {
+	var cooks = getCook(); 	
+  	 if (cooks[2].privkey) {  	
+  	$('.include').load('trans.html', 'body');	
+  	}}
+  	 else {
+  	 if ($('#getkeys').length) {
+  	 	$('#getkeys').fadeOut(300);
+  	 }
+  	$('#login h3').fadeOut(300, function() {
+  $(this).html('Login').fadeIn(1000);
+});
+  }
+  }
+  async function createKey() {
+  	let newkey = coinjs.newPrivkey(), newpass;
+  	await alertmsg(mess);
+ // 	animat(newkey);
+  	$('input#createpass').focus();
+  	$( "#getcreatepass" ).click(function() { 
+ newpass = $('#createpass').val();
+
+getLog(newkey, newpass);
+ 		//	getLog('', imkey)
+ 		
+
+
+}); 
+  	
+  }
+  async function importKey() {
+  let imkey, impass;
+  	alertmsg('<div id="ins"><b>Enter private key</b><div class="input_box"><input id="importkey"/></div><button id="getimportkey">&nbsp;&nbsp;OK&nbsp;&nbsp;</button> <button class="cancel" onclick="clouseAlert()"> Cancel</button></div>');
+  	$('input#importkey').focus();
+  	$( "#getimportkey" ).click(function() {
+  			 imkey = 	$('#importkey').val();
+  			$('#ins').fadeOut(400, function () {
+  				$(this).html('<b>Create new pass</b><div class="input_box pass"><input type="password" id="pass" class="importpass inpass"/><button class="hidepass" onclick="showpass()"></button></div><button id="getimportpass">New Pass</button> <button class="cancel" onclick="clouseAlert()"> Cancel</button></div>').fadeIn(400, function () {
+  			$('input#pass.importpass').focus();	
+$( "#getimportpass" ).click(function() { 
+ impass = $('input#pass.importpass').val();
+
+getLog(imkey, impass);
+ 		//	getLog('', imkey)
+
+
+});  					
+  				})
+  			})	
+ });
+}	
+  function scanqr() {
+  	alertmsg('<div id="scanqr"><div id="reader"></div></div> <button class="cancel scan"> Cancel</button>');
+  	// When scan is successful fucntion will produce data
+  		$('.cancel.scan').on('click', ScanStop);
+  	function ScanStop() {
+  html5QrCodeScanner.clear();
+clouseAlert();		
+  	}
+function onScanSuccess(decodedText) {
+
+      
+  //  console.log(decodedText)
+    html5QrCodeScanner.clear();
+    $.when(clouseAlert()).then(function() {
+  getLog(decodedText);
+});
+    
+    
+    
+}
+
+// When scan is unsuccessful fucntion will produce error message
+function onScanError(errorMessage) {
+  // Handle Scan Error
+}
+let qrboxFunction = function(viewfinderWidth, viewfinderHeight) {
+    let minEdgePercentage = 0.9; // 70%
+    let minEdgeSize = Math.min(viewfinderWidth, viewfinderHeight);
+    let qrboxSize = Math.floor(minEdgeSize * minEdgePercentage);
+    return {
+        width: qrboxSize,
+        height: qrboxSize
+    };
+}
+
+// Setting up Qr Scanner properties
+var html5QrCodeScanner = new Html5QrcodeScanner("reader", {
+  fps: 10,
+  qrbox: qrboxFunction
+});
+
+// in
+html5QrCodeScanner.render(onScanSuccess, onScanError);
+  
+//End Scaner QR/  
+  }
+  $(function(){
+//Scaner QR
+typadd();
+$('#fil').on('change', '#encrypt-input', function(e){
+if(e.target.files.length!=1){
+			alert('Please select a file to encrypt!');
+			return false;
+		}
+
+		file = e.target.files[0];
+//console.log(file);
+		if(file.size > 1024*1024){
+			alert('Please choose files smaller than 1mb, otherwise you may crash your browser. \nThis is a known issue. See the tutorial.');
+			return;
+		}
+	//console.log(file);
+	else {
+	var reader = new FileReader();
+		 reader.readAsText(file);
+reader.onload = function(e){
+getLog(e.target.result);
+}	
+//	$("#formpass").toggle('slow');
+		
+}
+
+
+			//reader.readAsText(file);
+	});
+})
+async function getLog(e, b) {
+if (b) {
+var dekey = e;
+var key = await encryptAES(e, b);
+} 
+else {
+	
+if(!/^U2FsdGVkX1/.test(e)){
+					alert("File is not a bit.key");
+					return false;
+				}
+	var key = e;			
+//res = decryptAES(pass, key);
+var dekey = await getKey(key,1, '<b>Enter password</b>');
+}
+	
+let mem = $("#mem").prop("checked"); 
+let coin = ['doge', 'ltc', 'btc', 'eth'];
+let promises = [];
+
+$.each(coin, function(index, value) {
+  let add = zapadd(value, dekey);
+  let promise = setCook(key, value, add.address, mem);
+  promises.push(promise);
+});
+
+$.when(Promise.all(promises)).then(function() {
+  clouseAlert();
+});
+
+checkLog();
+typadd();
+}
+function typadd() {
+	const raw = localStorage.getItem('address');
+
+if (raw) {
+  try {
+    const addresses = JSON.parse(raw); // распарсили объект
+
+    $('.addr').each(function () {
+      const coin = $(this).data('coin'); // читаем data-coin="btc" и т.п.
+      if (addresses[coin]) {
+        $(this).text(addresses[coin]);
+      }
+    });
+  } catch (e) {
+    console.error("Invalid address object:", e);
+  }
+}
+}
+
+  </script>
+  </body>
+</html>
+
+
+  
