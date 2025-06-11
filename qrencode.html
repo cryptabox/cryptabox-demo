@@ -1,6 +1,7 @@
 
   <body id="body">
   <div id="biginclude"> 
+<script src="js/jquery-qrcode-0.18.0.min.js"></script> 
 <style type="text/css">
 #privat { width: 100%;display: none; margin:10px 0;}
 #qrcode { max-width: 300px; max-height: 300px; margin: auto;}
@@ -28,7 +29,7 @@ var img_codebar = document.createElement('img');
 var imgsrc;
 var labe;
 const co = task=='rawkey'?`
-<div id="fee">
+<div id="bro">
 <div class="val">
 <input type="radio" name="fee" id="btc" value="btc"> 
    <label for="btc">Btc</label>    
@@ -70,8 +71,6 @@ $('#privat').hide('slow', function () {
 		$('#qrcode img').remove();
 	});
 let temp = await getKey(await getCook()[2].privkey, '', co + '<b>Enter password</b>');
-//let settemp = (s=='eth')?temp:zapadd(s,temp).wif;
-console.log(temp);
 let  key = (task == 'key' && typeof temp !== 'undefined')?await getCook()[2].privkey:(task =='rawkey'&&Array.isArray(temp))?temp[0]:task =='rawkey'?temp:'';
 let lab = (task =='rawkey'&&Array.isArray(temp))?temp[1]:task =='rawkey'?'eth':'cbox';
 $("#privat .input_box #qradd").text(key); 
@@ -124,7 +123,7 @@ $('#qrcode').qrcode(
 
     label: lab.toUpperCase(),
     fontname: 'Arial',
-    fontcolor: '#ffa305',
+   fontcolor: '#ffa305',
 
     image: null
 }
