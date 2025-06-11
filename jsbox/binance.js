@@ -56,7 +56,7 @@ let gg;
 if (time) {transtimer(); }  	
   	let key = new Promise((resolve, reject) => {
   		  		$( "#getkey" ).click(function() {
-  		  			gg = $('#fee input:checked').val()?$('#fee input:checked').val():'';
+  		  			gg = $('#bro input:checked').val()?$('#bro input:checked').val():'';
   			let pass = 	$('#pass').val();	
   			$('#ins').fadeOut(300, function () {
   	$(this).html('<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>').fadeIn(300, function () {
@@ -201,7 +201,7 @@ $('span.fiatbal').html('&nbsp;&nbsp;- - -');
   	clearInterval(balanceint);
   	 balanceint = null;
   	}
-  $('.net .tit span.ball').html('Not logged in');
+  $('.net span.ball').html('Not logged in');
   $('.net a.inactive.lin').attr('class', 'lin');
   }
   }
