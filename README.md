@@ -1,7 +1,12 @@
 # CryptaBox Wallet — Proof of Concept (PoC)
 [DEMO](https://cryptabox.github.io/cryptabox-demo/) || HOME PAGE: https://cryptabox.com/ 
 ---
-CryptaBox is a browser-based cryptocurrency wallet designed with a strong emphasis on **security**, **anonymity**, and **client-side key generation**. This repository contains a **working prototype (PoC)** to demonstrate the wallet's internal logic and transparent architecture.
+**CryptaBox Wallet** is not a cryptocurrency wallet in the traditional sense. 
+Instead, it is a software tool that empowers users to **independently create and manage their own cryptocurrency wallets (private keys) and generate transactions locally**. 
+
+**Everything happens entirely on the user’s side** — no central servers, no data collection — **fully in line with the original vision of cryptocurrency by Satoshi Nakamoto.**
+
+CryptaBox is a browser-based software tool designed with a strong emphasis on **security**, **anonymity**, and **client-side key generation**. This repository contains a **working prototype (PoC)** to demonstrate the wallet's internal logic and transparent architecture.
 
 ---
 
