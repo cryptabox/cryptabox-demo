@@ -1,6 +1,9 @@
 {
+  {
   "version": "1.0.1",
-  "download": "1",
-  "checksum": "2"
+  "download": "https://cryptabox.com/releases/CryptaBox-1.0.1.zip",
+  "checksum": "..."
+}
+
 }
 
